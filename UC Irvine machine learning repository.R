@@ -1,23 +1,41 @@
 getwd()
+## setting work directory 
 setwd("C:/Users/Soujanya/Documents/R")
 getwd()
+
+## Loading data into R
 data<-read.table("household_power_consumption.txt",header = TRUE, sep= ";")
+
+## Dataset quantity names
 names(data)
 lapply(data,class)
+
+## First few observations
 data$Time[1:10]
+## Combining date and time
 data$DateTime<-paste(data$Date, data$Time)
+
+## Changing DateTime to yyyy-mm-dd hh:mm:ss
 data$DateTime<-strptime(data$DateTime, "%d/%m/%Y %H:%M:%S")
 start<-which(data$DateTime==strptime("2007-02-01", "%Y-%m-%d"))
 
+## working on the data for dates 2007-02-01 and 2007-02-02.
 end<-which(data$DateTime==strptime("2007-02-02 23:59:00", "%Y-%m-%d %H:%M:%S"))
 
 data2<-data[start:end,]
+
+## Plotting obsevations
+## PLOT1
 hist(as.numeric(as.character(data2$Global_active_power)), # note we used as.character and as numeric since
      # the variable is factor variable.
      main="Global Active Power",
      xlab="Global Active Power (kilowatts)", col="red")
+
+## PLOT2
 plot(data2$DateTime, as.numeric(as.character(data2$Global_active_power)),
      type='l',ylab="Global Active Power (Kilowatts)", xlab="")
+
+## PLOT3
 plot(data2$DateTime, as.numeric(as.character(data2$Sub_metering_1)),type='l', 
      ylab ="Energy sub metering", xlab="")
 lines(data2$DateTime, as.numeric(as.character(data2$Sub_metering_2)),type='l', col='red')
@@ -30,6 +48,8 @@ plot(data2$DateTime, as.numeric(as.character(data2$Voltage)),type='l',
 
 plot(data2$DateTime, as.numeric(as.character(data2$Global_reactive_power)),type='l', 
      ylab="Global_reactive_power",xlab="datetime" )
+
+## PLOT4
 par(mfcol=c(2,2))
 
 plot(data2$DateTime, as.numeric(as.character(data2$Global_active_power)),type='l',ylab="Global Active Power", xlab="")
